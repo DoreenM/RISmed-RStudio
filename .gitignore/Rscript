@@ -1,0 +1,28 @@
+
+if(!require(RISmed)) install.packages("RISmed",repos = "http://cran.us.r-project.org")
+
+library(RISmed)
+
+search_topic <- 'RSV'
+search_topic2 <- 'Transmission Bottleneck'
+
+Search_query <- EUtilsSummary(search_topic,retmax =10, mindate=1960,maxdate=2017)
+Search_query2 <- EUtilsSummary(search_topic2,retmax =10, mindate=1960,maxdate=2017)
+
+summary(Search_query)
+summary(Search_query2)
+
+records<- EUtilsGet(Search_query)
+class(records)
+
+#records<- EUtilsGet(Search_query2)
+#class(records2)
+
+
+pubmed_data <- data.frame('Title'=ArticleTitle(records),'Abstract'=AbstractText(records))
+#write(pubmed_data, file = "search Results"
+
+pubmed_data
+#write.csv(pubmed_data, file = "SearchRsts.csv")
+write.table(pubmed_data, "SearchRsts.csv", sep="\t")
+
