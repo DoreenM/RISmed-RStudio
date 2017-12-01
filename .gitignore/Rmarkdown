@@ -1,0 +1,80 @@
+---
+title: "RSV Transmission Bottleneck Search Results"
+author: "Doreen"
+date: "11/30/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## About
+This Rmarkdown shows the instructions used to download pubmed documents 
+
+
+
+## Method
+
+Firstly, install **Rmarkdown** and **RISmed** packages required if they are not installed already.
+
+
+
+```{r include = FALSE}
+if(!require(rmarkdown)) install.packages("rmarkdown",repos = "http://cran.us.r-project.org")
+if(!require(RISmed)) install.packages("RISmed",repos = "http://cran.us.r-project.org")
+```
+
+
+Load the libraries 
+```{r,echo=FALSE}
+library(rmarkdown)
+library(RISmed)
+```
+assign search terms
+```{r} 
+  search_topic <- 'RSV'
+  search_topic2 <- 'Transmission Bottleneck'
+```
+
+For now we are returning 10 documents for now
+```{r}
+  Search_query <- EUtilsSummary(search_topic,retmax =10, mindate=1960,maxdate=2017)
+  Search_query2 <- EUtilsSummary(search_topic2,retmax =10, mindate=1960,maxdate=2017)
+```
+
+This shows actual number of documents available  
+```{r}
+  summary(Search_query)
+  summary(Search_query2)
+```
+
+```{r}
+    records<- EUtilsGet(Search_query)
+    class(records)
+    records2<-EUtilsGet(Search_query2)
+    class(records2)
+```
+
+```{r,engine = 'bash'}
+    touch search_results.csv
+  
+```
+
+Write to CSV search_results.csv 
+```{r}
+  pubmed_data <- data.frame('Title'=ArticleTitle(records),'Abstract'=AbstractText(records))
+  write.csv(pubmed_data,"search_results.csv")
+  
+```
+
+
+## The DataFrame containing Title and abstract
+
+
+
+```{r,echo=FALSE}
+knitr::kable(head(pubmed_data),format ="html")
+```
+
+
